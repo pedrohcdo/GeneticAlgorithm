@@ -13,6 +13,8 @@ public class Main extends PApplet {
 	// Race
 	ObstacleRace race;
 	float time = 0;
+	int saveId = 0;
+	
 	
 	/**
 	 * Setup
@@ -25,6 +27,23 @@ public class Main extends PApplet {
 	}
 
 	/**
+	 * Save Gene
+	 */
+	public void mouseClicked() {
+		if(mouseButton == 37) {
+			for(GCar genoma : race.getGenomas()) {
+				println();
+				if(genoma.isOver(mouseX, mouseY))
+					genoma.getNeural().saveToFIle("C:\\Users\\user\\git\\netga\\Net\\genoma" + saveId++ + ".data");
+			}
+		} else if(mouseButton == 39) {
+			MLP neural = new MLP(5, Configurations.SENSOR_LAYERS);
+			neural.loadFromFile("C:\\Users\\user\\git\\netga\\Net\\genoma" + (saveId-1) + ".data");
+			race.addGenoma(neural);
+		}
+	}
+	
+	/**
 	 * Draw
 	 */
 	public void draw() {
@@ -34,6 +53,7 @@ public class Main extends PApplet {
 		race.update();
 		
 		GCar bestGenoma = race.getBestGenoma();
+		
 		
 		//
 		fill(255, 50);

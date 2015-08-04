@@ -39,7 +39,7 @@ public class ObstacleRace {
 	public void reset() {
 		MLP neuralModel = new MLP(5, mSensorLayers);
 		prepareGeneration();
-		addGenoma(new GCar(neuralModel, mPApplet, mTrack));
+		addGenoma(neuralModel);
 		start();
 		mTrack.reset();
 		mStarted = false;
@@ -51,15 +51,6 @@ public class ObstacleRace {
 	public void prepareGeneration() {
 		mStarted = false;
 		mGenomas.clear();
-	}
-	
-	/**
-	 * Add Genoma
-	 * 
-	 * @param car
-	 */
-	public void addGenoma(GCar car) {
-		mGenomas.add(car);
 	}
 	
 	/**
@@ -90,8 +81,26 @@ public class ObstacleRace {
 			genoma.resetBlock();
 			genoma.unblock();
 			genoma.setTravelledDistance(0);
+			//genoma.resetStats();
 		}
 		mTrack.reset();
+	}
+	
+	/**
+	 * Add Genoma
+	 * @param genoma
+	 */
+	public void addGenoma(MLP neural) {
+		float[] startPosition = mTrack.getStartPosition();
+		float startDirection = mTrack.getStartDirection();
+		GCar genoma = new GCar(neural, mPApplet, mTrack);
+		genoma.setPosition(startPosition[0], startPosition[1]);
+		genoma.setDirection(startDirection);
+		genoma.setScroll(0);
+		genoma.resetBlock();
+		genoma.unblock();
+		genoma.setTravelledDistance(0);
+		mGenomas.add(genoma);
 	}
 	
 	/**
@@ -178,6 +187,14 @@ public class ObstacleRace {
 	}
 	
 	/**
+	 * Get Genomas
+	 * @return
+	 */
+	public List<GCar> getGenomas() {
+		return mGenomas;
+	}
+	
+	/**
 	 * Update
 	 */
 	public void draw() {
@@ -204,7 +221,7 @@ public class ObstacleRace {
 				mCurrentDistanceToGoal = Math.min(mCurrentDistanceToGoal, distance);
 				continue;
 			} else {
-				if(genoma.getStagnantTime() >= 150) {
+				if(genoma.getStagnantTime() >= 80) {
 					genoma.block();
 					continue;
 				}

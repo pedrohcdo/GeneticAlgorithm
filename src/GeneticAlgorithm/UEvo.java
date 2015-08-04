@@ -17,6 +17,48 @@ import NeuralNetwork.WeightInstancesCollection;
  */
 public class UEvo {
 
+	/**
+	 * Stagment Collection
+	 * @author user
+	 *
+	 */
+	class StagmentCollection <T> {
+		
+		//
+		List<T> collection = new ArrayList<T>();
+		float stagment = 0;
+		float fitness = 0;
+		
+	}
+	
+	/**
+	 * Comparator
+	 */
+	Comparator<Genoma> mGenomaComparator = new Comparator<Genoma>() {
+
+		@Override
+		public int compare(Genoma o1, Genoma o2) {
+			// Get best genoma
+			if( Math.abs(o2.getFitness()-o1.getFitness())  <= 20 ) {
+				if (o1.getStagnant() < o2.getStagnant())
+					return -1;
+				else if (o1.getStagnant() > o2.getStagnant())
+					return +1;
+			}
+			
+			// Order best fitness
+			if (o2.getFitness() < o1.getFitness())
+				return -1;
+			else if (o2.getFitness() > o1.getFitness())
+				return +1;
+			else
+				return 0;
+		}
+	};
+	
+	// Consts
+	final public static float STAGMENT_GROUP = 10;
+	
 	//
 	float mMutationProbability;
 	float mMaxMutation;
@@ -60,18 +102,7 @@ public class UEvo {
 		List<T> newGenomas = new ArrayList<T>();
 
 		// Sort
-		Collections.sort(genomas, new Comparator<T>() {
-
-			@Override
-			public int compare(T o1, T o2) {
-				if (o2.getFitness() < o1.getFitness())
-					return -1;
-				else if (o2.getFitness() > o1.getFitness())
-					return +1;
-				else
-					return 0;
-			}
-		});
+		Collections.sort(genomas, mGenomaComparator);
 
 		//
 		int mutates = 0;
@@ -80,7 +111,7 @@ public class UEvo {
 		int creates = 0;
 
 		// Melhores
-		for (int i = 0; i < Math.min(8, genomas.size()); i++)
+		for (int i = 0; i < Math.min(15, genomas.size()); i++)
 			newGenomas.add(genomas.get(i));
 
 		for (int i = 0; i < Math.min(10, genomas.size()); i++) {
@@ -136,6 +167,8 @@ public class UEvo {
 			newGenomas.add(genoma);
 			creates++;
 		}
+		
+		discardStagnantGenomas(newGenomas);
 
 		/**
 		 * int killed = 0;
@@ -152,9 +185,58 @@ public class UEvo {
 		System.out.println("Creates: " + creates);
 		System.out.println();
 
-		// discargBadGenomas(newGenomas);
-
+		
 		return newGenomas;
+	}
+	
+	/**
+	 * Discard Stagnant Genomas
+	 * @param genomas
+	 */
+	@SuppressWarnings("unchecked")
+	public <T extends Genoma> void discardStagnantGenomas(List<T> genomas) {
+		List<StagmentCollection<T>> scs = new ArrayList<StagmentCollection<T>>();
+		List<T> starters = new ArrayList<T>();
+		
+		// Create collections
+		brace: for(Genoma genoma : genomas) {
+			
+			// Starters
+			if(genoma.getFitness() == -1) {
+				starters.add((T)genoma);
+				continue;
+			}
+			
+			// Search best group
+			for(StagmentCollection<T> sc : scs) {
+				float diff1 = Math.abs(sc.fitness - genoma.getFitness());
+				float diff2 = Math.abs(sc.stagment - genoma.getStagnant()) * 2;
+				float diff = diff1 + diff2;
+				if(diff < STAGMENT_GROUP) {
+					sc.collection.add((T) genoma);
+					continue brace;
+				}
+			}
+			// If not found any group
+			StagmentCollection<T> sc = new StagmentCollection<T>();
+			sc.fitness = genoma.getFitness();
+			sc.stagment = genoma.getStagnant();
+			sc.collection.add((T) genoma);
+			scs.add(sc);
+		}
+		
+		// Select best genomas
+		int lastSize = genomas.size();
+		genomas.clear();
+		genomas.addAll(starters);
+		for(StagmentCollection<T> sc : scs) {
+			Collections.sort(sc.collection, mGenomaComparator);
+			for(int i=0; i<Math.min(3, sc.collection.size()); i++) {
+				genomas.add(sc.collection.get(i));
+			}
+		}
+		System.out.println("Discarted: " + (lastSize - genomas.size()));
+		Collections.sort(genomas, mGenomaComparator);
 	}
 
 	/**
@@ -234,8 +316,7 @@ public class UEvo {
 			boolean s = mRandom.nextBoolean() || mRandom.nextBoolean();
 			float v = wic.get(i);
 
-			wic.set(i, s ? mRandom.nextFloat() * v - mRandom.nextFloat() * v
-					: v);
+			wic.set(i, s ? mRandom.nextFloat() * v - mRandom.nextFloat() * v : v);
 		}
 	}
 

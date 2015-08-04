@@ -20,7 +20,7 @@ class SEvo {
 	 * 
 	 * @author user
 	 *
-	 */
+	 */ 
 	class Sample {
 
 		float[] inputs;

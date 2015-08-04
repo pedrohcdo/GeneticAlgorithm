@@ -197,6 +197,16 @@ public class GCar extends Genoma {
 	public float getDirection() {
 		return mDirection;
 	}
+	
+	/**
+	 * Return true if over
+	 * @param x
+	 * @param y
+	 * @return
+	 */
+	public boolean isOver(float x, float y) {
+		return Math.hypot(x - getX(), y - getY()) <= mRadius;
+	}
 
 	/**
 	 * Update
@@ -215,6 +225,7 @@ public class GCar extends Genoma {
 		mPosition[0] = cp[0];
 		mPosition[1] = cp[1];
 		mTravelledDistance += Math.hypot(lx - mx, ly - my);
+		setStagnant(mTravelledDistance);
 		
 		// Update Sensor Distances
 		float incr = (float)(Math.PI / 4);
@@ -271,8 +282,8 @@ public class GCar extends Genoma {
 		xEnd = (float) Math.cos(rad-incr/2) * mRadius + mPosition[0];
 		yEnd = (float) Math.sin(rad-incr/2) * mRadius + mPosition[1];
 		mApplet.triangle(getX() - mScroll, getY(), xStart - mScroll, yStart, xEnd - mScroll, yEnd);
-		dsx = (float) Math.cos(rad-incr/4) ;
-		dsy = (float) Math.sin(rad-incr/4) ;
+		dsx = (float) Math.cos(rad-incr/4);
+		dsy = (float) Math.sin(rad-incr/4);
 		mApplet.line(getX() + dsx * mRadius - mScroll, getY() + dsy * mRadius, dsx * mSensorDistances[4] + getX() - mScroll, dsy * mSensorDistances[4] + getY());
 		
 		// Draw Body
