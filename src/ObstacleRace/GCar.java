@@ -1,5 +1,7 @@
 package ObstacleRace;
 
+import java.security.acl.LastOwnerException;
+
 import processing.core.PApplet;
 import GeneticAlgorithm.Genoma;
 import NeuralNetwork.MLP;
@@ -205,7 +207,7 @@ public class GCar extends Genoma {
 	 * @return
 	 */
 	public boolean isOver(float x, float y) {
-		return Math.hypot(x - getX(), y - getY()) <= mRadius;
+		return Math.hypot(x - (getX() - mScroll), y - getY()) <= mRadius;
 	}
 
 	/**
@@ -214,7 +216,9 @@ public class GCar extends Genoma {
 	 */
 	public void update() {
 		// Upate Direction
+		//float lastDirection = 0;
 		mDirection += (float)(Math.PI * 2) * mNeural.output(mSensorDistances)[0];
+		//mTravelledDistance += Math.abs(lastDirection - mDirection);
 		
 		// Update Position
 		float lx = mPosition[0];

@@ -179,11 +179,11 @@ public class UEvo {
 		 */
 
 		// println("Killed: " + killed);
-		System.out.println("Mutates: " + mutates);
-		System.out.println("Cross Mutates: " + crossMutates);
-		System.out.println("Cross: " + cross);
-		System.out.println("Creates: " + creates);
-		System.out.println();
+		//System.out.println("Mutates: " + mutates);
+		//System.out.println("Cross Mutates: " + crossMutates);
+		//System.out.println("Cross: " + cross);
+		//System.out.println("Creates: " + creates);
+		//System.out.println();
 
 		
 		return newGenomas;
@@ -235,7 +235,7 @@ public class UEvo {
 				genomas.add(sc.collection.get(i));
 			}
 		}
-		System.out.println("Discarted: " + (lastSize - genomas.size()));
+		//System.out.println("Discarted: " + (lastSize - genomas.size()));
 		Collections.sort(genomas, mGenomaComparator);
 	}
 

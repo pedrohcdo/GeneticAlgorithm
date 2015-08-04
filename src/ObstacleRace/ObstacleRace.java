@@ -7,6 +7,7 @@ import processing.core.PApplet;
 import GeneticAlgorithm.Genoma;
 import GeneticAlgorithm.UEvo;
 import NeuralNetwork.MLP;
+import NeuralNetwork.TransferFunction;
 
 public class ObstacleRace {
 
@@ -37,7 +38,7 @@ public class ObstacleRace {
 	 * Reset
 	 */
 	public void reset() {
-		MLP neuralModel = new MLP(5, mSensorLayers);
+		MLP neuralModel = new MLP(5, mSensorLayers, TransferFunction.SIGMOID);
 		prepareGeneration();
 		addGenoma(neuralModel);
 		start();

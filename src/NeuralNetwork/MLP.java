@@ -49,15 +49,27 @@ public class MLP {
 	 * 
 	 * @param inputs
 	 * @param layersInfo
+	 * @param transferFunction
 	 */
-	public MLP(int inputs, int[] layersInfo) {
+	public MLP(int inputs, int[] layersInfo, int transferFunction) {
 		for (int layerInfo : layersInfo) {
 			Layer layer = new Layer();
 			layer.perceptrons = new Perceptron[layerInfo];
 			for (int i = 0; i < layerInfo; i++)
-				layer.perceptrons[i] = new Perceptron(inputs);
+				layer.perceptrons[i] = new Perceptron(inputs, transferFunction);
 			mLayers.add(layer);
 			inputs = layerInfo;
+		}
+	}
+	
+	/**
+	 * Set Layer Transfer Function
+	 * @param layer
+	 * @param function
+	 */
+	public void setLayerTF(int layer, int function) {
+		for(Perceptron perceptron : mLayers.get(layer).perceptrons) {
+			perceptron.setTF(function);
 		}
 	}
 
