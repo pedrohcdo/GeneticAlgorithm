@@ -128,6 +128,15 @@ public class AEvo {
 	}
 	
 	/**
+	 * Get Population Size
+	 * 
+	 * @return
+	 */
+	public int getPopulationSize() {
+		return mGenomas.size();
+	}
+	
+	/**
 	 * Get Best Genoma
 	 */
 	public Genoma getBestGenoma() {

@@ -122,41 +122,47 @@ public class UEvo {
 		}
 		
 		// Melhores (Mutate)
-		for (int i = 0; i < Math.min(8, genomas.size()); i++) {
-			if (mRandom.nextBoolean() || mRandom.nextBoolean() || mRandom.nextBoolean()) {
-				T genoma = genomas.get(i).copy();
-				mutate(genoma);
-				newGenomas.add(genoma);
-				mutates++;
-			}
-		}
-
-		// Melhores (Crssover x Mutate)
-		for (int i = 0; i < Math.min(3, genomas.size()); i++) {
-			for (int j = 0; j < Math.min(3, genomas.size()); j++) {
-				if (mRandom.nextBoolean() || mRandom.nextBoolean()) {
-					T genomaA = genomas.get(i).copy();
-					T genomaB = genomas.get(j).copy();
-					crossover(genomaA, genomaB);
-					mutate(genomaA);
-					mutate(genomaB);
-					newGenomas.add(genomaA);
-					newGenomas.add(genomaB);
-					crossMutates++;
+		for(int j=0; j<3; j++) {
+			for (int i = 0; i < Math.min(10, genomas.size()); i++) {
+				if (mRandom.nextBoolean() || mRandom.nextBoolean() || mRandom.nextBoolean()) {
+					T genoma = genomas.get(i).copy();
+					mutate(genoma);
+					newGenomas.add(genoma);
+					mutates++;
 				}
 			}
 		}
 
+		// Melhores (Crssover x Mutate)
+		for(int k=0; k<3; k++) {
+			for (int i = 0; i < Math.min(3, genomas.size()); i++) {
+				for (int j = 0; j < Math.min(3, genomas.size()); j++) {
+					if (mRandom.nextBoolean() || mRandom.nextBoolean()) {
+						T genomaA = genomas.get(i).copy();
+						T genomaB = genomas.get(j).copy();
+						crossover(genomaA, genomaB);
+						mutate(genomaA);
+						mutate(genomaB);
+						newGenomas.add(genomaA);
+						newGenomas.add(genomaB);
+						crossMutates++;
+					}
+				}
+			}
+		}
+		
 		// Melhores (Crssover)
-		for (int i = 0; i < Math.min(3, genomas.size()); i++) {
-			for (int j = 0; j < Math.min(3, genomas.size()); j++) {
-				if (mRandom.nextBoolean() || mRandom.nextBoolean() || mRandom.nextBoolean()) {
-					T genomaA = genomas.get(i).copy();
-					T genomaB = genomas.get(j).copy();
-					crossover(genomaA, genomaB);
-					newGenomas.add(genomaA);
-					newGenomas.add(genomaB);
-					cross++;
+		for(int k=0; k<3; k++) {
+			for (int i = 0; i < Math.min(3, genomas.size()); i++) {
+				for (int j = 0; j < Math.min(3, genomas.size()); j++) {
+					if (mRandom.nextBoolean() || mRandom.nextBoolean() || mRandom.nextBoolean()) {
+						T genomaA = genomas.get(i).copy();
+						T genomaB = genomas.get(j).copy();
+						crossover(genomaA, genomaB);
+						newGenomas.add(genomaA);
+						newGenomas.add(genomaB);
+						cross++;
+					}
 				}
 			}
 		}
