@@ -21,6 +21,9 @@ Each gene also has a certain fitness that in this application represents the dis
 
 At the beginning of the race x genes are generated in the population, each gene has an initial neural network, at each generation the best genes are selected to carry out crossings and mutations in them and thus new genes are generated.
 
+### Video Sample:
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/qS6BORzQWkY/0.jpg)](https://www.youtube.com/watch?v=qS6BORzQWkY)
+
 ## Installation
 
 ```bash
@@ -37,3 +40,6 @@ Cd into the directory and run:
 This will start the app on toolbar.  
 You can also run the `src.main.java.Main` class as a Java application.
 
+## License
+
+[Apache License 2.0](LICENSE)
