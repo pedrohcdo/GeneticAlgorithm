@@ -1,4 +1,4 @@
-# Neural Network and Generic Algorithms Simulation
+# Neural Network w/ Generic Algorithms Simulation
 This application aims to demonstrate an application of the theory of evolution in the field of artificial intelligence.
 The implementations included in the project are:
 
